@@ -18,22 +18,22 @@ public class Cajero {
    private String nombre;
    private int ticketsEmitidos;
    private double totalDia;
-   private ArrayList<Producto> ps;
+   private ArrayList<Producto> productLista;
    private static final double ivaPerciento = 0.21;
 
     public Cajero(String n) {
         this.nombre = n;
         this.ticketsEmitidos = 0;
         this.totalDia = 0;
-        this.ps = new ArrayList<>();
+        this.productLista = new ArrayList<>();
     }
 
     public void anadirProducto(Producto producto) {
-        ps.add(producto);
+        productLista.add(producto);
     }
 
     public void eliminarProducto(Producto producto) {
-        ps.remove(producto);
+        productLista.remove(producto);
     }
 
     public void cobrar() {
@@ -49,13 +49,13 @@ public class Cajero {
     private void limpiarTicket(double tot) {
         ticketsEmitidos = ticketsEmitidos + 1;
         totalDia = totalDia + tot;
-        ps.clear();
+        productLista.clear();
     }
 
     private void imprimirTicket(double subt, double iva, double tot) {
         System.out.println("===== TICKET =====");
         System.out.println("Cajero: " + nombre);
-        for (Producto p : ps) {
+        for (Producto p : productLista) {
             System.out.println(p.getNombre() + " x" + p.getCantidad()
                     + " = " + String.format("%.2f", p.calcularImporte()) + " EUR");
         }
@@ -68,7 +68,7 @@ public class Cajero {
 
     private double CalcularSubTotal() {
         double subt = 0;
-        for (Producto p : ps) {
+        for (Producto p : productLista) {
             subt = subt + p.calcularImporte();
         }
         return subt;
@@ -98,7 +98,7 @@ public class Cajero {
     }
 
     public boolean ticketVacio() {
-        return ps.isEmpty();
+        return productLista.isEmpty();
     }
 
     public int getTicketsEmitidos() {
