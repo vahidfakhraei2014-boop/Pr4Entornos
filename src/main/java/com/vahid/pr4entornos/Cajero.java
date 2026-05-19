@@ -27,42 +27,54 @@ import java.util.ArrayList;
  *   <li>Realizar cierre de caja</li>
  * </ul>
  *
- * @author Alumno A
+ * clase cajero he refactorizado. laos cambios incluido nombre de varaiable, y parametros, los  processo encapsulada dentro de  methodos
+ * 
+ * @author Alumno A y B
  * @version 1.0
  */
 public class Cajero {
 
-    String n;
-    int c;
-    double t;
-    ArrayList<Producto> ps;
+   private String nombre;
+   private int ticketsEmitidos;
+   private double totalDia;
+   private ArrayList<Producto> productLista;
+   private static final double ivaPerciento = 0.21;
 
     public Cajero(String n) {
-        this.n = n;
-        this.c = 0;
-        this.t = 0;
-        this.ps = new ArrayList<>();
+        this.nombre = n;
+        this.ticketsEmitidos = 0;
+        this.totalDia = 0;
+        this.productLista = new ArrayList<>();
     }
 
-    public void ANADIRPRODUCTO(Producto p) {
-        ps.add(p);
+    public void anadirProducto(Producto producto) {
+        productLista.add(producto);
     }
 
-    public void eliminarProDUCTO(Producto p) {
-        ps.remove(p);
+    public void eliminarProducto(Producto producto) {
+        productLista.remove(producto);
     }
 
     public void cobrar() {
-        double subt = 0;
-        for (Producto p : ps) {
-            subt = subt + p.calcularImporte();
-        }
-        double iva = subt * 0.21;
-        double tot = subt + iva;
+        double subt = CalcularSubTotal();
+        double iva = calcularIVA(subt);
+        double tot = calcularPercioConIVA(subt, iva);
 
+        imprimirTicket(subt, iva, tot);
+
+        limpiarTicket(tot);
+    }
+
+    private void limpiarTicket(double tot) {
+        ticketsEmitidos = ticketsEmitidos + 1;
+        totalDia = totalDia + tot;
+        productLista.clear();
+    }
+
+    private void imprimirTicket(double subt, double iva, double tot) {
         System.out.println("===== TICKET =====");
-        System.out.println("Cajero: " + n);
-        for (Producto p : ps) {
+        System.out.println("Cajero: " + nombre);
+        for (Producto p : productLista) {
             System.out.println(p.getNombre() + " x" + p.getCantidad()
                     + " = " + String.format("%.2f", p.calcularImporte()) + " EUR");
         }
@@ -71,33 +83,48 @@ public class Cajero {
         System.out.println("IVA (21%): " + String.format("%.2f", iva) + " EUR");
         System.out.println("TOTAL: " + String.format("%.2f", tot) + " EUR");
         System.out.println("==================");
-
-        c = c + 1;
-        t = t + tot;
-        ps.clear();
     }
 
+    private double CalcularSubTotal() {
+        double subt = 0;
+        for (Producto p : productLista) {
+            subt = subt + p.calcularImporte();
+        }
+        return subt;
+    }
+
+    private double calcularPercioConIVA(double subt, double iva) {
+        double tot = subt + iva;
+        return tot;
+    }
+
+    private double calcularIVA(double subt) {
+        double iva = subt * ivaPerciento;
+        return iva;
+    }
+    
+
     public void cierreCaja() {
-        double ivaRec = t - (t / (1 + 0.21));
+        double ivaRec = totalDia - (totalDia / (1 + ivaPerciento));
 
         System.out.println("===== CIERRE DE CAJA =====");
-        System.out.println("Cajero: " + n);
+        System.out.println("Cajero: " + nombre);
         System.out.println("--------------------------");
-        System.out.println("Tickets emitidos: " + c);
-        System.out.println("Total facturado:  " + String.format("%.2f", t) + " EUR");
+        System.out.println("Tickets emitidos: " + ticketsEmitidos);
+        System.out.println("Total facturado:  " + String.format("%.2f", totalDia) + " EUR");
         System.out.println("IVA recaudado:    " + String.format("%.2f", ivaRec) + " EUR");
         System.out.println("==========================");
     }
 
     public boolean ticketVacio() {
-        return ps.isEmpty();
+        return productLista.isEmpty();
     }
 
     public int getTicketsEmitidos() {
-        return c;
+        return ticketsEmitidos;
     }
 
     public double getTotalDia() {
-        return t;
+        return totalDia;
     }
 }
