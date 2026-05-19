@@ -6,9 +6,29 @@ package com.vahid.pr4entornos;
 
 import java.util.ArrayList;
 
+
+
 /**
+ * Clase que representa un cajero encargado de gestionar productos,
+ * realizar cobros y controlar el cierre de caja diario.
  *
- * @author loren
+ * <p>Esta clase almacena los productos añadidos a un ticket,
+ * calcula el subtotal, aplica el IVA (21%) y genera un ticket de compra.</p>
+ *
+ * <p>También mantiene el control de los tickets emitidos
+ * y el total facturado durante el día.</p>
+ *
+ * <p>Funcionalidades principales:</p>
+ * <ul>
+ *   <li>Añadir y eliminar productos del ticket</li>
+ *   <li>Realizar el cobro de un ticket</li>
+ *   <li>Calcular IVA y total</li>
+ *   <li>Imprimir ticket</li>
+ *   <li>Realizar cierre de caja</li>
+ * </ul>
+ *
+ * @author Alumno A
+ * @version 1.0
  */
 public class Cajero {
 
